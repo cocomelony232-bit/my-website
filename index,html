@@ -3,46 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Special Letter</title>
+  <title>2Luv Clone - Interactive Love Letters</title>
   <style>
-    body, html {
+    /* Reset & Base Styling */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #12131a;
+    }
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      perspective: 1000px;
+      background-color: #12131a;
+      color: #e0e2ed;
+      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    /* SCREEN 1: ENVELOPE WRAPPER */
-    .envelope-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100vh;
+    /* Navigation Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background-color: #1b1c24;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff8da1;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    nav a {
+      color: #a0a5c0;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 15px;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff8da1;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(180deg, #1b1c24 0%, #12131a 100%);
+    }
+    .hero-section h1 {
+      font-size: 2.8rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-section p {
+      font-size: 1.2rem;
+      color: #a0a5c0;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+    }
+    .cta-btn {
+      background: radial-gradient(circle, #ffcbd6 0%, #ff8da1 100%);
+      color: #12131a;
+      padding: 15px 35px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 30px;
+      box-shadow: 0 5px 20px rgba(255, 141, 161, 0.3);
+      display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 141, 161, 0.4);
+    }
+
+    /* Interactive Letter Preview Component */
+    .interactive-container {
       display: flex;
       justify-content: center;
-      align-items: center;
-      background: #12131a;
-      z-index: 10;
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      padding: 40px 20px;
     }
-
-    /* THE ENVELOPE BASE */
-    .envelope {
+    .envelope-preview {
       position: relative;
-      width: 90%;
+      width: 100%;
       max-width: 440px;
       height: 280px;
       background-color: #1b1c24;
       border-bottom-left-radius: 16px;
       border-bottom-right-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
     }
-
-    /* FRONT DIAGONAL POCKET PANS */
-    .envelope::before {
+    .envelope-preview::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -53,8 +116,6 @@
       border-bottom-left-radius: 16px;
       border-bottom-right-radius: 16px;
     }
-
-    /* TOP FLAP CRITICAL TRIANGLE */
     .top-flap {
       position: absolute;
       top: 0; left: 0; width: 0; height: 0;
@@ -71,245 +132,192 @@
         border-right-width: calc(45vw);
       }
     }
-
-    /* LETTER CARD (With dynamic expansion states) */
     .letter-card {
       position: absolute;
-      top: 10px;
-      left: 5%;
-      width: 90%;
-      height: 260px;
+      top: 10px; left: 5%; width: 90%; height: 250px;
       background: #1f202b;
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-sizing: border-box;
-      padding: 30px;
-      transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
-                  width 0.6s ease, height 0.6s ease, left 0.6s ease, top 0.6s ease;
+      padding: 20px;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
       z-index: 2;
     }
-
-    /* INITIAL ENVELOPE CONTENT STYLES */
-    .card-text {
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 14px;
-      margin: 6px 0;
-      letter-spacing: 1px;
-      transition: opacity 0.3s;
-    }
-    .card-text span {
-      color: rgba(255, 255, 255, 0.8);
+    .letter-card p {
+      color: rgba(255,255,255,0.8);
       font-family: 'Georgia', serif;
       font-style: italic;
-      margin-left: 5px;
+      margin-bottom: 10px;
     }
-
-    .open-link {
-      margin-top: 15px;
-      color: #ff8da1;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: bold;
-      cursor: pointer;
-      border-bottom: 1px dashed #ff8da1;
-      padding-bottom: 2px;
-      transition: opacity 0.3s;
-    }
-
-    /* WAX SEAL BUTTON CONTAINER */
     .heart-seal {
       position: absolute;
-      top: 115px;
-      left: calc(50% - 25px);
-      width: 50px;
-      height: 50px;
+      top: 115px; left: calc(50% - 25px);
+      width: 50px; height: 50px;
       background: radial-gradient(circle, #ffcbd6 0%, #ff8da1 100%);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       box-shadow: 0 5px 15px rgba(255, 141, 161, 0.4);
-      cursor: pointer;
       z-index: 5;
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
     .heart-seal::after { content: '♥'; color: white; font-size: 22px; }
 
-    /* HIDDEN FULL MESSAGE PARAGRAPH */
-    .full-message {
-      opacity: 0;
-      max-height: 0;
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 16px;
-      line-height: 1.6;
-      text-align: center;
-      font-family: 'Georgia', serif;
-      transition: opacity 0.5s ease 0.6s;
-      overflow: hidden;
-    }
-
-    /* CHIC BUTTON TO ENTER FEED */
-    .next-feed-btn {
-      opacity: 0;
-      pointer-events: none;
-      margin-top: 25px;
-      background: transparent;
-      border: 1px solid #ff8da1;
-      color: #ff8da1;
-      padding: 10px 24px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 12px;
-      letter-spacing: 1px;
-      transition: opacity 0.5s ease 0.8s, background 0.3s, color 0.3s;
-    }
-    .next-feed-btn:hover {
-      background: #ff8da1;
-      color: #12131a;
-    }
-
-    /* STATE 1: FLAP FOLDS OPEN */
-    .envelope.open-flap .top-flap {
+    /* Open Animations Trigger Classes */
+    .envelope-preview.open .top-flap {
       transform: rotateX(180deg);
       z-index: 1;
     }
-    .envelope.open-flap .heart-seal {
+    .envelope-preview.open .heart-seal {
       transform: scale(0);
       opacity: 0;
-      pointer-events: none;
     }
-    .envelope.open-flap .letter-card {
-      transform: translateY(-130px); /* Slides clear out of the pouch pocket */
-    }
-
-    /* STATE 2: FULLY UNFOLDED VIEWING POSITION */
-    .envelope.fully-open .letter-card {
-      position: fixed;
-      top: 10vh;
-      left: 5vw;
-      width: 90vw;
-      height: 80vh;
-      max-width: 440px;
-      transform: translateY(0);
-      z-index: 100; /* Floats over everything */
-      justify-content: center;
-    }
-    .envelope.fully-open .card-text, 
-    .envelope.fully-open .open-link {
-      opacity: 0;
-      display: none;
-    }
-    .envelope.fully-open .full-message {
-      opacity: 1;
-      max-height: 400px;
-    }
-    .envelope.fully-open .next-feed-btn {
-      opacity: 1;
-      pointer-events: auto;
+    .envelope-preview.open .letter-card {
+      transform: translateY(-120px);
     }
 
-    /* EXIT TRANSITIONS FOR ENVELOPE FRAME */
-    .envelope-wrapper.fade-out {
-      opacity: 0;
-      transform: scale(0.95);
-      pointer-events: none;
+    /* Product Cards Section */
+    .pricing-section {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 0 20px;
+      text-align: center;
     }
-
-    /* SCREEN 2: FINAL TIKTOK STYLE VIDEO FEED PANEL */
-    .feed-container {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100vh;
-      background: #000;
+    .pricing-section h2 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .card {
+      background: #1b1c24;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 40px 30px;
+      text-align: left;
       display: flex;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.8s ease;
-      z-index: 1;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .feed-container.active {
-      opacity: 1;
-      pointer-events: auto;
+    .card h3 {
+      font-size: 1.5rem;
+      color: #ffffff;
+      margin-bottom: 15px;
     }
-    .tiktok-frame {
-      width: 100%;
-      max-width: 420px;
-      height: 100%;
-      background: #111;
+    .card ul {
+      list-style: none;
+      margin-bottom: 30px;
     }
-    iframe { width: 100%; height: 100%; border: none; }
+    .card ul li {
+      margin-bottom: 12px;
+      color: #a0a5c0;
+      font-size: 15px;
+    }
+    .card ul li::before {
+      content: "✓ ";
+      color: #ff8da1;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    /* Footer */
+    footer {
+      background: #1b1c24;
+      padding: 40px 20px;
+      text-align: center;
+      color: #62657a;
+      font-size: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 100px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- STEP 1 VIEWPORT: ENVELOPE EXPERIENCE -->
-  <div class="envelope-wrapper" id="envelopeWrapper">
-    <div class="envelope" id="envelopeElement">
-      
-      <!-- Foldable Top Triangular Tab -->
-      <div class="top-flap"></div>
-      
-      <!-- Expandable Letter Paper Sheet -->
-      <div class="letter-card" id="cardElement">
-        <div class="card-text">To: <span>You</span></div>
-        <div class="card-text">From: <span>Me</span></div>
-        <a class="open-link" onclick="openSequence()">Open Letter</a>
-        
-        <!-- CUSTOM MESSAGE TARGET AREA -->
-        <div class="full-message">
-          Dearest,<br><br>
-          This is your fully opened message note! You can type whatever text you want to here. Share a poem, say happy birthday, or explain the video stream coming up next.<br><br>
-          With love,
-        </div>
-        
-        <!-- ACTION ACTION BUTTON TRIGGER -->
-        <button class="next-feed-btn" onclick="transitionToVideos()">View Feed →</button>
-      </div>
-      
-      <!-- Physical Center Seal Pin -->
-      <div class="heart-seal" onclick="openSequence()"></div>
-      
-    </div>
-  </div>
+  <!-- Header Navigation -->
+  <header>
+    <a href="#" class="logo">2luv</a>
+    <nav>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-  <!-- STEP 2 VIEWPORT: ACTUAL TIKTOK CONTAINER CLONE -->
-  <div class="feed-container" id="videoFeed">
-    <div class="tiktok-frame">
-      <iframe src="https://youtube.com" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <!-- Hero Content Display -->
+  <section class="hero-section">
+    <h1>Surprise the one you love with interactive letters</h1>
+    <p>Create a private digital Letter and unlock the full ad-free experience when you are ready. Add interactive Cards as a separate upgrade.</p>
+    <button class="cta-btn" onclick="toggleEnvelope()">Tap To Preview Letter</button>
+  </section>
+
+  <!-- Interactive Slider Mockup Section -->
+  <section class="interactive-container">
+    <div class="envelope-preview" id="previewEnvelope" onclick="toggleEnvelope()">
+      <div class="top-flap"></div>
+      <div class="letter-card">
+        <p>Dearest One,</p>
+        <p style="font-size: 14px; color: #a0a5c0; font-style: normal;">Your beautiful custom message card will rest right here...</p>
+      </div>
+      <div class="heart-seal"></div>
     </div>
-  </div>
+  </section>
+
+  <!-- Pricing Offer Plan Tiers Layout Grid -->
+  <section class="pricing-section" id="pricing">
+    <h2>Unlock Your Surprise Layout</h2>
+    <div class="grid">
+      
+      <!-- Tier 1 Card -->
+      <div class="card">
+        <div>
+          <h3>Digital Letter</h3>
+          <ul>
+            <li>Private digital URL link</li>
+            <li>Your message text and notes</li>
+            <li>Password protected access</li>
+            <li>Printable layout QR Code</li>
+          </ul>
+        </div>
+        <button class="cta-btn" style="width: 100%;">Create Letter</button>
+      </div>
+
+      <!-- Tier 2 Card -->
+      <div class="card" style="border-color: #ff8da1;">
+        <div>
+          <h3>Interactive Bundle</h3>
+          <ul>
+            <li>Everything in the Letter plan</li>
+            <li>16 exclusive modular display cards</li>
+            <li>Unlimited custom media uploads</li>
+            <li>Animated countup/countdown screens</li>
+          </ul>
+        </div>
+        <button class="cta-btn" style="width: 100%;">Create Bundle</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Legal & Copyright Block Footer -->
+  <footer>
+    <p>© 2026 2luv Project Layout Clone. All rights reserved.</p>
+  </footer>
 
   <script>
-    function openSequence() {
-      const envelope = document.getElementById('envelopeElement');
-      
-      // Phase 1: Open the flap and pop up the card slightly
-      envelope.classList.add('open-flap');
-      
-      // Phase 2: Fully pop out and scale up into full viewing mode
-      setTimeout(() => {
-        envelope.classList.add('fully-open');
-      }, 1000);
-    }
-
-    function transitionToVideos() {
-      // Fade out envelope interface
-      document.getElementById('envelopeWrapper').classList.add('fade-out');
-      
-      // Bring up and activate the background media container
-      setTimeout(() => {
-        document.getElementById('videoFeed').classList.add('active');
-      }, 500);
+    // Logic handles toggling interactive letter flap up or down
+    function toggleEnvelope() {
+      const envelope = document.getElementById('previewEnvelope');
+      envelope.classList.toggle('open');
     }
   </script>
+
 </body>
 </html>
