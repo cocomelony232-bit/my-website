@@ -3,10 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First GitHub Site</title>
+    <title>My Personal Website</title>
+    <style>
+        /* Modern Dark Theme Setup */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #1f1f1f;
+            padding: 15px;
+            border-bottom: 2px solid #333;
+        }
+        nav a {
+            color: #00ffcc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        nav a:hover {
+            color: #ffffff;
+        }
+
+        /* Hero Welcome Section */
+        .hero {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1f1f1f, #121212);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #aaaaaa;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* Call to Action Button */
+        .btn {
+            background-color: #00ffcc;
+            color: #121212;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #00cca3;
+        }
+
+        /* Main Content Section */
+        .content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: left;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1f1f1f;
+            padding: 20px;
+            font-size: 14px;
+            color: #666;
+            margin-top: 60px;
+            border-top: 1px solid #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Website!</h1>
-    <p>This site is hosted for free using GitHub Pages.</p>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Hero Introduction -->
+    <div class="hero">
+        <h1>Welcome to My Website</h1>
+        <p>Hi, I'm glad you're here. This is my brand new website hosted entirely for free on GitHub Pages. Explore around to learn more about me!</p>
+        <a href="about.html" class="btn">Learn More About Me</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content">
+        <h2>About This Project</h2>
+        <p>I built this homepage using HTML and CSS to create a clean, responsive web experience. It adjusts smoothly whether you view it on a computer or a smartphone.</p>
+        
+        <h2>My Skills & Interests</h2>
+        <p>You can use this area to talk about your hobbies, your business, your portfolio, or things you love to do. Change the text to make it entirely yours!</p>
+    </div>
+
+    <!-- Footer Area -->
+    <footer>
+        <p>&copy; 2026 My GitHub Site. Created with HTML & CSS.</p>
+    </footer>
+
 </body>
 </html>
